@@ -8,25 +8,25 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
+        stage('Instalar Dependencias') {
             steps {
                 sh 'npm install'
             }
         }
         
-        stage('Run Tests') {
+        stage('Ejecutar Pruebas') {
             steps {
                 sh 'npm test -- --watchAll=false'
             }
         }
         
-        stage('Build') {
+        stage('Construir') {
             steps {
                 sh 'npm run build'
             }
         }
         
-        stage('Build Docker Image') {
+        stage('Construir Imagen Docker') {
             steps {
                 sh 'docker build -t dog-breeds-frontend:${BUILD_NUMBER} .'
                 sh 'docker tag dog-breeds-frontend:${BUILD_NUMBER} localhost:5000/dog-breeds-frontend:${BUILD_NUMBER}'
@@ -34,14 +34,14 @@ pipeline {
             }
         }
         
-        stage('Push to Registry') {
+        stage('Subir al Registro') {
             steps {
                 sh 'docker push localhost:5000/dog-breeds-frontend:${BUILD_NUMBER}'
                 sh 'docker push localhost:5000/dog-breeds-frontend:latest'
             }
         }
         
-        stage('Deploy to QA') {
+        stage('Desplegar en QA') {
             when {
                 branch 'develop'
             }
@@ -51,7 +51,7 @@ pipeline {
             }
         }
         
-        stage('Deploy to Production') {
+        stage('Desplegar en Producción') {
             when {
                 branch 'main'
             }
